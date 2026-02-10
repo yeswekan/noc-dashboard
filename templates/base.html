@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Operations Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i data-lucide="activity" class="logo-icon" style="width:28px;height:28px"></i>
+                <span class="logo-text">OpsDash</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                    <i data-lucide="layout-dashboard" style="width:20px;height:20px"></i>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+                <a href="/network" class="nav-link {% if request.path == '/network' %}active{% endif %}">
+                    <i data-lucide="network" style="width:20px;height:20px"></i>
+                    <span class="nav-label">Network</span>
+                </a>
+                <a href="/customers" class="nav-link {% if request.path == '/customers' %}active{% endif %}">
+                    <i data-lucide="users" style="width:20px;height:20px"></i>
+                    <span class="nav-label">Customers</span>
+                </a>
+                <a href="/tickets" class="nav-link {% if request.path == '/tickets' %}active{% endif %}">
+                    <i data-lucide="ticket" style="width:20px;height:20px"></i>
+                    <span class="nav-label">Tickets</span>
+                </a>
+                <a href="/settings" class="nav-link {% if request.path == '/settings' %}active{% endif %}">
+                    <i data-lucide="settings" style="width:20px;height:20px"></i>
+                    <span class="nav-label">Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="collapse-btn" id="collapse-btn">
+                    <i data-lucide="chevron-left" style="width:16px;height:16px"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <div class="main-wrapper">
+            <!-- Header -->
+            <header class="header">
+                <div>
+                    <button class="search-toggle" id="search-toggle">
+                        <i data-lucide="search" style="width:16px;height:16px"></i>
+                        <span>Search...</span>
+                    </button>
+                    <div class="search-box" id="search-box">
+                        <i data-lucide="search" style="width:16px;height:16px;color:var(--muted)"></i>
+                        <input type="text" placeholder="Search..." id="search-input">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="notif-btn">
+                        <i data-lucide="bell" style="width:20px;height:20px"></i>
+                        <span class="notif-dot"></span>
+                    </button>
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i data-lucide="user" style="width:16px;height:16px"></i>
+                        </div>
+                        <div>
+                            <div class="user-name">Admin</div>
+                            <div class="user-email">admin@ops.local</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    {% block scripts %}{% endblock %}
+    <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -3,8 +3,7 @@
 ## Prerequisites
 
 - Ubuntu 24.04 LTS server (Digital Ocean droplet)
-- Node.js 20+ installed
-- PM2 process manager (`npm install -g pm2`)
+- Python 3.10+
 - Nginx (reverse proxy)
 
 ## Quick Deploy
@@ -14,16 +13,44 @@
 git clone <your-repo-url> /opt/operations-dashboard
 cd /opt/operations-dashboard
 
-# 2. Install dependencies
-npm ci --production=false
+# 2. Create virtual environment and install dependencies
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 
-# 3. Build the app
-npm run build
+# 3. Run with Gunicorn
+gunicorn --bind 127.0.0.1:3000 --workers 3 app:app
 
-# 4. Start with PM2
-pm2 start ecosystem.config.js
-pm2 save
-pm2 startup  # follow the printed command to enable on boot
+# Or run in development mode
+python app.py
+```
+
+## Systemd Service (recommended for production)
+
+Create `/etc/systemd/system/opsdash.service`:
+
+```ini
+[Unit]
+Description=Operations Dashboard
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/operations-dashboard
+Environment="PATH=/opt/operations-dashboard/venv/bin"
+ExecStart=/opt/operations-dashboard/venv/bin/gunicorn --bind 127.0.0.1:3000 --workers 3 app:app
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable opsdash
+sudo systemctl start opsdash
 ```
 
 ## Nginx Configuration
@@ -46,6 +73,11 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
     }
+
+    location /static {
+        alias /opt/operations-dashboard/static;
+        expires 30d;
+    }
 }
 ```
 
@@ -65,8 +97,7 @@ sudo certbot --nginx -d your-domain.com
 ## Useful Commands
 
 ```bash
-pm2 status                  # Check app status
-pm2 logs operations-dashboard  # View logs
-pm2 restart operations-dashboard  # Restart
-npm run build && pm2 restart operations-dashboard  # Redeploy
+sudo systemctl status opsdash     # Check status
+sudo journalctl -u opsdash -f     # View logs
+sudo systemctl restart opsdash    # Restart
 ```

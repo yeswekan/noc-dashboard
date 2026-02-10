@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Customers — Operations Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Customers</h1>
+        <p class="page-subtitle">Manage customer accounts and subscriptions</p>
+    </div>
+    <button class="btn-primary">
+        <i data-lucide="user-plus" style="width:16px;height:16px"></i>
+        Add Customer
+    </button>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Total Customers</div>
+                <div class="stat-value">{{ counts.total }}</div>
+            </div>
+            <div class="stat-icon accent">
+                <i data-lucide="users" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Active</div>
+                <div class="stat-value">{{ counts.active }}</div>
+            </div>
+            <div class="stat-icon success">
+                <i data-lucide="users" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Suspended</div>
+                <div class="stat-value">{{ counts.suspended }}</div>
+            </div>
+            <div class="stat-icon danger">
+                <i data-lucide="user-x" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Monthly Revenue</div>
+                <div class="stat-value">$20,594</div>
+                <div class="stat-change positive">+12% from last month</div>
+            </div>
+            <div class="stat-icon success">
+                <i data-lucide="dollar-sign" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="data-table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Plan</th>
+                <th>Status</th>
+                <th>Bandwidth</th>
+                <th>Revenue</th>
+                <th>Join Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in customers %}
+            <tr>
+                <td style="font-weight:500">{{ c.name }}</td>
+                <td style="color:var(--muted)">{{ c.plan }}</td>
+                <td>
+                    <span class="badge {{ c.status }}">
+                        <span class="badge-dot"></span>
+                        {{ c.status|capitalize }}
+                    </span>
+                </td>
+                <td class="mono">{{ c.bandwidth }}</td>
+                <td style="font-weight:500">{{ c.revenue }}</td>
+                <td style="color:var(--muted)">{{ c.join_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

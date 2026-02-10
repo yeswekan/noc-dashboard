@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Settings — Operations Dashboard{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 24px">
+    <h1 class="page-title">Settings</h1>
+    <p class="page-subtitle">Configure your dashboard and system preferences</p>
+</div>
+
+<div class="settings-wrapper">
+    <!-- Notifications -->
+    <div class="settings-section">
+        <div class="settings-section-header">
+            <div class="settings-icon">
+                <i data-lucide="bell" style="width:20px;height:20px"></i>
+            </div>
+            <div>
+                <div class="settings-section-title">Notifications</div>
+                <div class="settings-section-desc">Configure how you receive alerts</div>
+            </div>
+        </div>
+        <div class="settings-body">
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Email Notifications</div>
+                    <div class="toggle-desc">Receive alerts via email</div>
+                </div>
+                <button class="toggle-switch on"><span class="toggle-knob"></span></button>
+            </div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Critical Alerts Only</div>
+                    <div class="toggle-desc">Only notify on critical events</div>
+                </div>
+                <button class="toggle-switch"><span class="toggle-knob"></span></button>
+            </div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Weekly Digest</div>
+                    <div class="toggle-desc">Receive a weekly summary report</div>
+                </div>
+                <button class="toggle-switch on"><span class="toggle-knob"></span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monitoring -->
+    <div class="settings-section">
+        <div class="settings-section-header">
+            <div class="settings-icon">
+                <i data-lucide="monitor" style="width:20px;height:20px"></i>
+            </div>
+            <div>
+                <div class="settings-section-title">Monitoring</div>
+                <div class="settings-section-desc">Network monitoring preferences</div>
+            </div>
+        </div>
+        <div class="settings-body">
+            <div class="input-row">
+                <label>Polling Interval (seconds)</label>
+                <input type="number" placeholder="30">
+            </div>
+            <div class="input-row">
+                <label>Latency Threshold (ms)</label>
+                <input type="number" placeholder="50">
+            </div>
+            <div class="input-row">
+                <label>Packet Loss Alert Threshold (%)</label>
+                <input type="number" placeholder="1">
+            </div>
+        </div>
+    </div>
+
+    <!-- Security -->
+    <div class="settings-section">
+        <div class="settings-section-header">
+            <div class="settings-icon">
+                <i data-lucide="shield" style="width:20px;height:20px"></i>
+            </div>
+            <div>
+                <div class="settings-section-title">Security</div>
+                <div class="settings-section-desc">Authentication and access settings</div>
+            </div>
+        </div>
+        <div class="settings-body">
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Two-Factor Authentication</div>
+                    <div class="toggle-desc">Require 2FA for all admin accounts</div>
+                </div>
+                <button class="toggle-switch on"><span class="toggle-knob"></span></button>
+            </div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Session Timeout</div>
+                    <div class="toggle-desc">Auto-logout after 30 minutes of inactivity</div>
+                </div>
+                <button class="toggle-switch on"><span class="toggle-knob"></span></button>
+            </div>
+            <div class="input-row">
+                <label>Allowed IP Ranges</label>
+                <input type="text" placeholder="0.0.0.0/0">
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Retention -->
+    <div class="settings-section">
+        <div class="settings-section-header">
+            <div class="settings-icon">
+                <i data-lucide="database" style="width:20px;height:20px"></i>
+            </div>
+            <div>
+                <div class="settings-section-title">Data Retention</div>
+                <div class="settings-section-desc">Configure data storage policies</div>
+            </div>
+        </div>
+        <div class="settings-body">
+            <div class="input-row">
+                <label>Log Retention (days)</label>
+                <input type="number" placeholder="90">
+            </div>
+            <div class="input-row">
+                <label>Metrics Retention (days)</label>
+                <input type="number" placeholder="365">
+            </div>
+            <div class="toggle-row">
+                <div>
+                    <div class="toggle-label">Auto-archive Resolved Tickets</div>
+                    <div class="toggle-desc">Archive tickets after 30 days</div>
+                </div>
+                <button class="toggle-switch on"><span class="toggle-knob"></span></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="settings-footer">
+        <button class="btn-primary">
+            <i data-lucide="save" style="width:16px;height:16px"></i>
+            Save Changes
+        </button>
+    </div>
+</div>
+{% endblock %}

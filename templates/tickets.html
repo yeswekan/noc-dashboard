@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Tickets — Operations Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Support Tickets</h1>
+        <p class="page-subtitle">Track and manage customer support requests</p>
+    </div>
+    <button class="btn-primary">
+        <i data-lucide="ticket" style="width:16px;height:16px"></i>
+        New Ticket
+    </button>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Open</div>
+                <div class="stat-value">{{ counts.open }}</div>
+            </div>
+            <div class="stat-icon danger">
+                <i data-lucide="alert-circle" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">In Progress</div>
+                <div class="stat-value">{{ counts.in_progress }}</div>
+            </div>
+            <div class="stat-icon warning">
+                <i data-lucide="clock" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Resolved</div>
+                <div class="stat-value">{{ counts.resolved }}</div>
+            </div>
+            <div class="stat-icon success">
+                <i data-lucide="check-circle" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Avg. Response Time</div>
+                <div class="stat-value">2.4 hrs</div>
+                <div class="stat-change positive">-18% from last month</div>
+            </div>
+            <div class="stat-icon accent">
+                <i data-lucide="clock" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="data-table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Subject</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Assignee</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set status_labels = {'open': 'Open', 'in_progress': 'In Progress', 'resolved': 'Resolved', 'closed': 'Closed'} %}
+            {% for t in tickets %}
+            <tr>
+                <td class="mono" style="font-weight:500;color:var(--accent)">{{ t.id }}</td>
+                <td>{{ t.customer }}</td>
+                <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.subject }}</td>
+                <td>
+                    <span class="badge {{ t.priority }}">
+                        {{ t.priority|capitalize }}
+                    </span>
+                </td>
+                <td>
+                    <span class="badge {{ t.status }}">
+                        <span class="badge-dot"></span>
+                        {{ status_labels[t.status] }}
+                    </span>
+                </td>
+                <td style="color:var(--muted)">{{ t.assignee }}</td>
+                <td class="mono" style="color:var(--muted)">{{ t.created }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
