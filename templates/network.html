@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Network — Operations Dashboard{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 24px">
+    <h1 class="page-title">Network Status</h1>
+    <p class="page-subtitle">Monitor all network infrastructure nodes</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Online</div>
+                <div class="stat-value">{{ counts.online }}</div>
+            </div>
+            <div class="stat-icon success">
+                <i data-lucide="server" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Warnings</div>
+                <div class="stat-value">{{ counts.warning }}</div>
+            </div>
+            <div class="stat-icon warning">
+                <i data-lucide="alert-triangle" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Offline</div>
+                <div class="stat-value">{{ counts.offline }}</div>
+            </div>
+            <div class="stat-icon danger">
+                <i data-lucide="wifi" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Maintenance</div>
+                <div class="stat-value">{{ counts.maintenance }}</div>
+            </div>
+            <div class="stat-icon accent">
+                <i data-lucide="wrench" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="data-table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Node</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Latency</th>
+                <th>Throughput</th>
+                <th>Uptime</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for node in nodes %}
+            <tr>
+                <td style="font-weight:500">{{ node.name }}</td>
+                <td style="color:var(--muted)">{{ node.location }}</td>
+                <td>
+                    <span class="badge {{ node.status }}">
+                        <span class="badge-dot"></span>
+                        {{ node.status|capitalize }}
+                    </span>
+                </td>
+                <td class="mono">{{ node.latency }}</td>
+                <td class="mono">{{ node.throughput }}</td>
+                <td class="mono">{{ node.uptime }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

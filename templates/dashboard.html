@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — Operations Dashboard{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 24px">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Network operations overview</p>
+</div>
+
+<!-- KPI Cards -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Network Uptime</div>
+                <div class="stat-value">{{ stats.uptime }}</div>
+                <div class="stat-change positive">+0.01% from last month</div>
+            </div>
+            <div class="stat-icon success">
+                <i data-lucide="activity" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Active Customers</div>
+                <div class="stat-value">{{ stats.customers }}</div>
+                <div class="stat-change positive">+23 this month</div>
+            </div>
+            <div class="stat-icon accent">
+                <i data-lucide="users" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Open Tickets</div>
+                <div class="stat-value">{{ stats.open_tickets }}</div>
+                <div class="stat-change positive">-5 from last week</div>
+            </div>
+            <div class="stat-icon warning">
+                <i data-lucide="ticket" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-inner">
+            <div>
+                <div class="stat-label">Active Nodes</div>
+                <div class="stat-value">{{ stats.active_nodes }}</div>
+                <div class="stat-change neutral">4 nodes in maintenance</div>
+            </div>
+            <div class="stat-icon accent">
+                <i data-lucide="wifi" style="width:20px;height:20px"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row 1 -->
+<div class="charts-grid">
+    <div class="chart-card">
+        <h3>Network Traffic (Gbps)</h3>
+        <div class="chart-container">
+            <canvas id="trafficChart"></canvas>
+        </div>
+        <div class="chart-legend">
+            <span><span class="legend-dot" style="background:#3b82f6"></span>Inbound</span>
+            <span><span class="legend-dot" style="background:#22c55e"></span>Outbound</span>
+        </div>
+    </div>
+    <div class="chart-card">
+        <h3>Uptime History (%)</h3>
+        <div class="chart-container">
+            <canvas id="uptimeChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row 2 -->
+<div class="charts-grid">
+    <div class="chart-card">
+        <h3>Tickets by Category</h3>
+        <div class="pie-layout">
+            <div class="pie-chart-wrapper">
+                <canvas id="ticketPieChart"></canvas>
+            </div>
+            <div class="pie-legend" id="pieLegend">
+                <!-- Filled by JS or statically -->
+                <div class="pie-legend-item">
+                    <span class="pie-legend-label">
+                        <span class="pie-legend-dot" style="background:#3b82f6"></span>Connectivity
+                    </span>
+                    <span class="pie-legend-value">35%</span>
+                </div>
+                <div class="pie-legend-item">
+                    <span class="pie-legend-label">
+                        <span class="pie-legend-dot" style="background:#22c55e"></span>Billing
+                    </span>
+                    <span class="pie-legend-value">25%</span>
+                </div>
+                <div class="pie-legend-item">
+                    <span class="pie-legend-label">
+                        <span class="pie-legend-dot" style="background:#f59e0b"></span>Speed
+                    </span>
+                    <span class="pie-legend-value">20%</span>
+                </div>
+                <div class="pie-legend-item">
+                    <span class="pie-legend-label">
+                        <span class="pie-legend-dot" style="background:#ef4444"></span>Hardware
+                    </span>
+                    <span class="pie-legend-value">12%</span>
+                </div>
+                <div class="pie-legend-item">
+                    <span class="pie-legend-label">
+                        <span class="pie-legend-dot" style="background:#8b5cf6"></span>Other
+                    </span>
+                    <span class="pie-legend-value">8%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="alerts-card">
+        <h3>Recent Alerts</h3>
+        <div class="alerts-list">
+            {% for alert in alerts %}
+            <div class="alert-item {{ alert.severity }}">
+                <span class="alert-icon">
+                    {% if alert.severity == 'critical' %}
+                    <i data-lucide="alert-circle" style="width:16px;height:16px"></i>
+                    {% elif alert.severity == 'warning' %}
+                    <i data-lucide="alert-triangle" style="width:16px;height:16px"></i>
+                    {% else %}
+                    <i data-lucide="info" style="width:16px;height:16px"></i>
+                    {% endif %}
+                </span>
+                <div>
+                    <div class="alert-message">{{ alert.message }}</div>
+                    <div class="alert-time">{{ alert.time }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}
